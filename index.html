@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOKO Apps - Mobil Uygulama Geliştirme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6A3DE8;
+            --primary-dark: #4B2AAC;
+            --secondary: #FFB800;
+            --dark: #1E1E2C;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --gray-light: #E9ECEF;
+            --success: #28A745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-highlight {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 32, 44, 0.7), rgba(26, 32, 44, 0.7)), url('/api/placeholder/1200/600') center/cover no-repeat;
+            color: white;
+            padding: 8rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.9;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .about-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+        }
+
+        /* Apps Section */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .app-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .app-card:hover .app-image img {
+            transform: scale(1.05);
+        }
+
+        .app-content {
+            padding: 1.5rem;
+        }
+
+        .app-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .app-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .app-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background: var(--gray-light);
+            color: var(--gray);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .app-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .app-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* Technologies Section */
+        .tech-section {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .tech-section .section-title h2,
+        .tech-section .section-title p {
+            color: white;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: flex;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+
+        .contact-icon {
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            background: var(--gray-light);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-logo h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .footer-logo p {
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--secondary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+            }
+
+            .contact-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">KOKO<span class="logo-highlight">Apps</span></a>
+                <div class="nav-links">
+                    <a href="#about" class="nav-link">Hakkımızda</a>
+                    <a href="#apps" class="nav-link">Uygulamalarımız</a>
+                    <a href="#technologies" class="nav-link">Teknolojiler</a>
+                    <a href="#contact" class="nav-link">İletişim</a>
+                </div>
+                <button class="mobile-menu-btn">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Yenilikçi Mobil Uygulamalar</h1>
+            <p>KOKO Apps olarak, modern teknolojilerle kullanıcı dostu ve yenilikçi Android uygulamaları geliştiriyoruz. Uygulama fikirlerinizi gerçeğe dönüştürmek için buradayız!</p>
+            <a href="#apps" class="btn btn-primary">Uygulamalarımızı Keşfedin</a>
+            <a href="#contact" class="btn btn-secondary">Bize Ulaşın</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Hakkımızda</h2>
+                <p>KOKO Apps'in hikayesi ve vizyonu</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Biz Kimiz?</h3>
+                    <p>KOKO Apps, Mert Erdoğan Apa tarafından kurulmuş, kullanıcı odaklı mobil uygulama geliştirme stüdyosudur. 3 yılı aşkın deneyimle, Kotlin, Java ve Jetpack Compose gibi modern teknolojileri kullanarak yenilikçi Android uygulamaları geliştiriyoruz.</p>
+                    <p>Profesyonel kariyerinde VSight şirketinde (Vilnius, Litvanya) Android Geliştirici olarak çalışan kurucumuz, Retrofit, Room, MVVM, Jetpack Compose, Coroutines ve Dagger Hilt gibi teknolojileri kullanarak yüksek kaliteli uygulamalar geliştirmiş ve 20'den fazla Google Play uygulamasından sorumlu olmuştur.</p>
+                    <p>KOKO Apps'de amacımız, kullanıcılarımıza değer katan, sorunlara çözüm sunan ve günlük hayatı kolaylaştıran uygulamalar geliştirmektir. Her projemizde en güncel teknolojileri kullanarak, performanslı ve kullanıcı dostu uygulamalar yaratmak için çalışıyoruz.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apps Section -->
+    <section id="apps" style="background-color: #f0f4f8;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Uygulamalarımız</h2>
+                <p>Geliştirdiğimiz yenilikçi mobil uygulamalar</p>
+            </div>
+            <div class="apps-grid">
+                <!-- App 1 -->
+                <div class="app-card">
+                    <div class="app-image">
+                        <img src="virtualtryon.webp" alt="Sewing Patterns & AI Try On">
+                    </div>
+                    <div class="app-content">
+                        <h3 class="app-title">Sewing Patterns & AI Try On</h3>
+                        <p class="app-description">Yapay zeka ile kıyafet deneme uygulaması. Kullanıcılar farklı kıyafet modellerini AI sayesinde sanal olarak deneyebilir.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">Jetpack Compose</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">Room</span>
+                            <span class="tech-tag">Dagger Hilt</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.halmob.sewingpatternstry" target="_blank" class="btn btn-primary app-btn">Google Play</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App 2 -->
+                <div class="app-card">
+                    <div class="app-image">
+                        <img src="aichefassistant.webp" alt="AI Chef Assistant">
+                    </div>
+                    <div class="app-content">
+                        <h3 class="app-title">AI Chef Assistant</h3>
+                        <p class="app-description">Yapay zeka destekli şef asistanı uygulaması. Malzemelerinize göre tarif önerileri ve detaylı yemek tarifleri.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">Firebase Cloud Functions</span>
+                            <span class="tech-tag">Firebase App Check</span>
+                            <span class="tech-tag">Kotlin</span>
+                            <span class="tech-tag">Room</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.mea.aichefassistant" target="_blank" class="btn btn-primary app-btn">Google Play</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App 3 -->
+                <div class="app-card">
+                    <div class="app-image">
+                        <img src="plantguide.webp" alt="Plant Guide">
+                    </div>
+                    <div class="app-content">
+                        <h3 class="app-title">Plant Guide</h3>
+                        <p class="app-description">Bitki bakımı ve yetiştirilmesi için kapsamlı bir rehber uygulaması. Detaylı bakım önerileri ve sorun tespit desteği.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">Jetpack Compose</span>
+                            <span class="tech-tag">Proxy Backend</span>
+                            <span class="tech-tag">Firebase App Check</span>
+                            <span class="tech-tag">Room</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.mea.plant_guide" target="_blank" class="btn btn-primary app-btn">Google Play</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App 4 -->
+                <div class="app-card">
+                    <div class="app-image">
+                        <img src="contactimportexport.webp" alt="Contact Import & Export">
+                    </div>
+                    <div class="app-content">
+                        <h3 class="app-title">Contact Import & Export</h3>
+                        <p class="app-description">Kişileri kolayca yönetmek, içeri ve dışarı aktarmak için kullanışlı bir uygulama. Kişilerinizi yedekleyin ve taşıyın.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">Jetpack Compose</span>
+                            <span class="tech-tag">Room</span>
+                            <span class="tech-tag">Flow & Coroutines</span>
+                            <span class="tech-tag">Dagger Hilt</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.mea.contact_import_export" target="_blank" class="btn btn-primary app-btn">Google Play</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App 5 -->
+                <div class="app-card">
+                    <div class="app-image">
+                        <img src="todo.webp" alt="To Do: Manage Tasks">
+                    </div>
+                    <div class="app-content">
+                        <h3 class="app-title">To Do: Manage Tasks</h3>
+                        <p class="app-description">Görevlerinizi organize etmek ve takip etmek için modern bir yapılacaklar listesi uygulaması. Günlük işlerinizi planlayın.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">Jetpack Compose</span>
+                            <span class="tech-tag">Room</span>
+                            <span class="tech-tag">Flow & Coroutines</span>
+                            <span class="tech-tag">Dagger Hilt</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.mea.todoapp" target="_blank" class="btn btn-primary app-btn">Google Play</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App 6 -->
+                <div class="app-card">
+                    <div class="app-image">
+                        <img src="apartmantlar.webp" alt="Apartments Sudoku">
+                    </div>
+                    <div class="app-content">
+                        <h3 class="app-title">Apartments Sudoku</h3>
+                        <p class="app-description">Klasik sudoku kurallarına dayanarak geliştirilmiş, binalar ve apartmanlar temalı özgün bir zeka bulmacası oyunu.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">Unity</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">Google AdMob</span>
+                            <span class="tech-tag">C#</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.KOKOApps.ApartmentsSudoku" target="_blank" class="btn btn-primary app-btn">Google Play</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section id="technologies" class="tech-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Teknolojilerimiz</h2>
+                <p>Uygulamalarımızda kullandığımız modern teknolojiler</p>
+            </div>
+            <div class="tech-grid">
+                <!-- Tech 1 -->
+                <div class="tech-item">
+                    <div class="tech-icon">📱</div>
+                    <h3 class="tech-name">Kotlin & Java</h3>
+                    <p class="tech-desc">Modern Android uygulama geliştirme için Google'ın önerdiği resmi programlama dilleri</p>
+                </div>
+
+                <!-- Tech 2 -->
+                <div class="tech-item">
+                    <div class="tech-icon">🎨</div>
+                    <h3 class="tech-name">Jetpack Compose</h3>
+                    <p class="tech-desc">Modern UI geliştirme için deklaratif kullanıcı arayüzü toolkit'i</p>
+                </div>
+
+                <!-- Tech 3 -->
+                <div class="tech-item">
+                    <div class="tech-icon">🔥</div>
+                    <h3 class="tech-name">Firebase</h3>
+                    <p class="tech-desc">Backend hizmetleri, analitik, veritabanı ve daha fazlası için Google'ın platform çözümü</p>
+                </div>
+
+                <!-- Tech 4 -->
+                <div class="tech-item">
+                    <div class="tech-icon">💾</div>
+                    <h3 class="tech-name">Room Database</h3>
+                    <p class="tech-desc">SQLite veritabanı üzerinde bir soyutlama katmanı sağlayan yerel veri saklama çözümü</p>
+                </div>
+
+                <!-- Tech 5 -->
+                <div class="tech-item">
+                    <div class="tech-icon">⚡</div>
+                    <h3 class="tech-name">Coroutines & Flow</h3>
+                    <p class="tech-desc">Asenkron programlama için hafif ve güçlü çözüm</p>
+                </div>
+
+                <!-- Tech 6 -->
+                <div class="tech-item">
+                    <div class="tech-icon">💉</div>
+                    <h3 class="tech-name">Dagger Hilt</h3>
+                    <p class="tech-desc">Android için standart bağımlılık enjeksiyonu kütüphanesi</p>
+                </div>
+
+                <!-- Tech 7 -->
+                <div class="tech-item">
+                    <div class="tech-icon">🏗️</div>
+                    <h3 class="tech-name">MVVM</h3>
+                    <p class="tech-desc">Mimari desen olarak Model-View-ViewModel kullanımı</p>
+                </div>
+
+                <!-- Tech 8 -->
+                <div class="tech-item">
+                    <div class="tech-icon">🎮</div>
+                    <h3 class="tech-name">Unity & C#</h3>
+                    <p class="tech-desc">Oyun geliştirme için güçlü ve esnek platform</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>İletişim</h2>
+                <p>Sorularınız veya projeleriniz için bizimle iletişime geçin</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Bize Ulaşın</h3>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span>Istanbul, Türkiye</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <span>kokoappsinfo@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🌐</span>
+                            <span>Google Play Store: KOKO Apps</span>
+                        </div>
+                    </div>
+                    <h3>Bizi Takip Edin</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/merterdoganapa20/" target="_blank" class="social-link">in</a>
+                        <a href="https://github.com/merterdoganapa" target="_blank" class="social-link">GH</a>
